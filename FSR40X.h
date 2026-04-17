@@ -25,25 +25,36 @@ class FSR40X
   //  adjust voltage of ADC runtime
   bool    setVoltage(float voltage);
 
-  //  READ
-  //  raw converted to Newtons
+  //  READ NEW DATA
+  float   readRaw(uint8_t times = 1);  // average steps
+  //  read raw converted to Newtons
+  //  updates getters below.
   float   readNewton(uint8_t times = 1);
-  //  raw converted to kilogram force
-  float   readKgf(uint8_t times = 1);
-  float   readFSR(uint8_t times = 1);  //  raw FSR in Ohm
-  float   readRaw(uint8_t times = 1);  //  raw ADC in steps
+
+  //  GET LAST DATA
+  //                        UNITS
+  float   getVout();    //  Volts
+  float   getNewton();  //  Newton
+  float   getKgf();     //  kilogram force
+  float   getLbf();     //  pound force
+  float   getFSR();     //  Ohm
+
 
   protected:
   uint8_t  _adcPin;
   float    _voltage;
   uint16_t _steps;
-  float    _voltsPerStep;
   float    _resistor;
+  float    _vout   = -1;
+  float    _newton = -1;
+  float    _fsr    = -1;
 };
 
 
+/////////////////////////////////////////
+//
 //  DERIVED CLASSES
-
+//
 class FSR400 : public FSR40X
 {
   public:

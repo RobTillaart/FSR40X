@@ -26,15 +26,19 @@ void setup()
 
 void loop()
 {
-  if (FSR.readNewton() > 0)
+  if (FSR.readNewton(1) > 0)
   {
+    Serial.print(FSR.getVout(), 3);
+    Serial.print("\t");
+    Serial.print(FSR.getFSR(), 3);
+    Serial.print("\t");
     Serial.print(FSR.getNewton(), 3);
     Serial.print("\t");
-    Serial.print(FSR.getKgf(), 4);
+    Serial.print(FSR.getLbf(), 3);
     Serial.print("\t");
-    Serial.println(FSR.getLbf(), 4);
+    Serial.println(FSR.getKgf(), 3);
   }
-  delay(100);
+  //  delay(100);
 }
 
 

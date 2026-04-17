@@ -34,10 +34,12 @@ void loop()
 {
   float x = FSR.readNewton();
   //  allow 2% noise
-  if ((x < (reference * 0.98)) || (x > (reference * 1.02)))
+  if ((x < (reference * 0.95)) || (x > (reference * 1.05)))
   {
     //  log the timestamp.
     Serial.print(millis());
+    Serial.print(": ");
+    Serial.print(x);
     Serial.print(": ");
     Serial.println("ALARM!!!");
     //  or any other form of alarm.

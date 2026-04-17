@@ -19,8 +19,7 @@ Arduino library for FSR40X Force Sensing Resistors.
 **Experimental**
 
 This library is to use Force Sensing Resistors of the FSR400 series.
-Main goal of the library is to convert a raw ADC voltage to Newtons
-or kilogram force.
+Main goal of the library is to convert a raw ADC voltage to Newtons, kilogram force (kgf) or pound force (lbf).
 The accuracy of the sensors is limited (~5% ??) and thus only
 gives an **indication** of the force applied.
 
@@ -109,18 +108,29 @@ Performance depends on the ADC / board used.
 
 ### Constructor
 
-- **FSR40X()** 
-- **bool begin(float resistor)**
+- **FSR40X(uint8_t ADCpin, float voltage, uint16_t steps)** define the ADC, voltage range and steps.
+- **bool begin(float resistor)** define the fixed resistor. This can be
+runtime adjusted, (e.g. select different resistors for better range).
 - **bool setVoltage(float voltage)** runtime adjustment of the voltage
 of the ADC as specified in the constructor.
 
 ### Read
 
-- **float readNewton(uint8_t times = 1)** read and converted to Newtons.
-- **float readKgf(uint8_t times = 1)** read and converted to kilogram force.
-Conversion constant 1 kgf = 9.80655 Newton.
-- **float readFSR(uint8_t times = 1)** read resistance of the FSR in Ohm.
-- **float readRaw(uint8_t times = 1)** read raw ADC.
+- **float readRaw(uint8_t times = 1)** average read of the ADC.
+- **float readNewton(uint8_t times = 1)** measure and convert to Newtons.
+
+Values of the last **readNewton()** measurement. The values do not change
+until a new **readNewton()** call is made.
+
+- **float getVout()** returns Vout (volts)
+- **float getNewton()** returns Newtons.
+- **float getKgf()** returns kilogram force.
+Conversion constant 1 newton = 0.101971621 kgf.
+- **float getLbf()** returns pound force.
+Conversion constant 1 newton = 0.224808943 lbf.
+- **float getFSR()** return resistance of the FSR in Ohm.
+
+Note: 1 kgf = 9.80655 Newton (gravitation constant).
 
 
 ## Future
@@ -132,6 +142,8 @@ Conversion constant 1 kgf = 9.80655 Newton.
 
 #### Should
 
+- magic formula, make it configurable?
+- make magic numbers a constant float.
 
 #### Could
 

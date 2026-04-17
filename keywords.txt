@@ -8,10 +8,14 @@ FSR40X	KEYWORD1
 begin	KEYWORD2
 setVoltage	KEYWORD2
 
-readNewton	KEYWORD2
-readKgf	KEYWORD2
-readFSR	KEYWORD2
 readRaw	KEYWORD2
+readNewton	KEYWORD2
+
+getVout	KEYWORD2
+getNewton	KEYWORD2
+getKgf	KEYWORD2
+getLbf	KEYWORD2
+getFSR	KEYWORD2
 
 
 # Constants (LITERAL1)
