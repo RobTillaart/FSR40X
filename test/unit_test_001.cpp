@@ -47,7 +47,7 @@ unittest(test_constants)
 
 unittest(test_constructor)
 {
-  FSR40X obj;
+  FSR40X fsr(14, 5.0, 1023);
 }
 
 
