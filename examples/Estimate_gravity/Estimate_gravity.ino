@@ -1,14 +1,10 @@
-//    FILE: .ino
+//    FILE: Estimate_gravity.ino
 //  AUTHOR: Rob Tillaart
-// VERSION: 0.2.0
-//    DATE: 
-// PURPOSE: 
-//     URL: 
+// PURPOSE: estimate gravity acceleration at certain latitude
+//     URL: https://github.com/RobTillaart/FSR40X
+
 
 #include "Arduino.h"
-
-uint32_t start, stop;
-
 
 
 void setup() 
@@ -34,8 +30,6 @@ void setup()
 
 void loop()
 {
-
-
 }
 
 // -- END OF FILE --
