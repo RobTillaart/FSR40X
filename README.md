@@ -19,7 +19,8 @@ Arduino library for FSR40X Force Sensing Resistors.
 **Experimental**
 
 This library is to use Force Sensing Resistors of the FSR400 series.
-Main goal of the library is to convert a raw ADC voltage to Newtons, kilogram force (kgf) or pound force (lbf).
+Main goal of the library is to convert a raw ADC voltage to Newtons, 
+kilogram force (kgf) or pound force (lbf).
 The accuracy of the sensors is limited (~5% ??) and thus only
 gives an **indication** of the force applied.
 
@@ -36,6 +37,7 @@ In the future they might have specific functions.
 |  FSR404  |  20 mm donut   |  5 mm hole
 |  FSR406  |  38 mm square  |
 |  FSR408  |  10 mm strip   |  length 50..500 mm
+
 
 The FSR40X device needs to be in a voltage divider, with the middle connected
 to the analog input of your choice.
@@ -61,6 +63,19 @@ Essentially a voltage divider.
 
 The 10 K resistor gives a broad range of values.
 See datasheet for possible other values and their range.
+
+
+### Acceleration of gravity
+
+This constant is used to convert Kgf to Newtons. The library use the
+defined average, although gravity is not uniform.
+It varies ~0.7% due to latitude, altitude, and local density differences.
+In space it varies even more.
+Feel free to adjust the library to your needs.
+
+- poles:   9.8337 m/s2
+- equator: 9.7806 m/s2
+- average: 9.80655 m/s2
 
 
 ### Special characters
@@ -97,7 +112,10 @@ TODO: Test on Arduino UNO and ESP32
 
 ### Performance
 
-Performance depends on the ADC / board used.
+The core function **readNewton()** does one or more analog reads and average them
+This average is converted to newtons in a number of floating point steps.
+The duration of a call depends on the ADC / board used, the number of samples to 
+average and if it supports float operations in hardware.
 
 
 ## Interface
@@ -108,25 +126,33 @@ Performance depends on the ADC / board used.
 
 ### Constructor
 
-- **FSR40X(uint8_t ADCpin, float voltage, uint16_t steps)** define the ADC, voltage range and steps.
-- **bool begin(float resistor)** define the fixed resistor. This can be
-runtime adjusted, (e.g. select different resistors for better range).
-- **bool setVoltage(float voltage)** runtime adjustment of the voltage
+- **FSR40X(uint8_t ADCpin, float voltage, uint16_t steps)** define the ADC, 
+voltage range and steps. Defaults the fixed resistor to 10 kOhm.
+- **bool begin(float resistor = 10000)** define the fixed resistor which together 
+with the FSR forms a voltage divider. This value can be runtime adjusted, 
+e.g. select different resistors for better range.
+The default is 10 kOhm, which might be fine tuned e.g. use 9983.
+- **bool setVoltage(float voltage)** allows runtime adjustment of the voltage
 of the ADC as specified in the constructor.
+
 
 ### Read
 
-- **float readRaw(uint8_t times = 1)** average read of the ADC.
-- **float readNewton(uint8_t times = 1)** measure and convert to Newtons.
+- **float readRaw(uint8_t times = 1)** average read of the ADC. Allows one
+to add a tailor made conversion.
+- **float readNewton(uint8_t times = 1)** make one or more ADC measurements,
+average them and convert them and returns the value to Newtons. 
+Intermediate results are stored and can be fetched by the "getters" below.
 
-Values of the last **readNewton()** measurement. The values do not change
-until a new **readNewton()** call is made.
+Getters to access internal values from the last **readNewton()** measurement. 
+The values do not change until a new **readNewton()** call is made.
+Before first readNewton() they have no meaningful value.
 
-- **float getVout()** returns Vout (volts)
-- **float getNewton()** returns Newtons.
-- **float getKgf()** returns kilogram force.
+- **float getVout()** returns Vout in volts.
+- **float getNewton()** returns force in Newtons.
+- **float getKgf()** returns force in kilogram force.
 Conversion constant 1 newton = 0.101971621 kgf.
-- **float getLbf()** returns pound force.
+- **float getLbf()** returns force in pound force.
 Conversion constant 1 newton = 0.224808943 lbf.
 - **float getFSR()** return resistance of the FSR in Ohm.
 
@@ -143,7 +169,6 @@ Note: 1 kgf = 9.80655 Newton (gravitation constant).
 #### Should
 
 - magic formula, make it configurable?
-- make magic numbers a constant float.
 
 #### Could
 

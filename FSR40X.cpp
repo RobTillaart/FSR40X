@@ -10,12 +10,17 @@
 #include "FSR40X.h"
 
 
+constexpr float KGF2NEWTON = 9.80655;      //  = acceleration of gravity
+constexpr float NEWTON2KGF = 0.101971621;  //  1.0 / KGF2NEWTON
+constexpr float NEWTON2LBF = 0.224808943;
+
+
 FSR40X::FSR40X(uint8_t ADCpin, float voltage, uint16_t steps)
 {
   _adcPin  = ADCpin;
   _voltage = voltage;
   _steps   = steps;
-  _resistor = 3000;
+  _resistor = 10000;
 }
 
 bool FSR40X::begin(float resistor)
@@ -82,12 +87,12 @@ float FSR40X::getNewton()
 
 float FSR40X::getKgf()
 {
-  return _newton * 0.101971621;  //  ==> 1.0 / 9.80655 gravity constant
+  return _newton * NEWTON2KGF;
 }
 
 float FSR40X::getLbf()
 {
-  return _newton * 0.224808943;
+  return _newton * NEWTON2LBF;
 }
 
 float FSR40X::getFSR()
