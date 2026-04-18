@@ -25,7 +25,7 @@ void setup()
   for (float FSR = 100; FSR < 10000000; FSR *= 1.03)
   {
     //  graph interpolation (datapoints datasheet)
-    float fg1 = 26.9117452575 * pow(FSR * 0.001, -1.114166333);
+    float fg1 = 9.80655 * 2.69117452575 * pow(FSR * 0.001, -1.114166333);
     //  approximation (google)
     float fg2 = 1e6 / FSR;
     if (fg2 < 1000) fg2 /= 80.0;
@@ -50,7 +50,7 @@ void setup()
   delay(100);
   volatile float FSR = 100000;
   uint32_t start = micros();
-  float x = 26.9117452575 * pow(FSR * 0.001, -1.114166333);
+  float x = (9.80655 * 2.69117452575) * pow(FSR * 0.001, -1.114166333);
   uint32_t duration1 = micros() - start;
 
   start = micros();

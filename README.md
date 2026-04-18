@@ -51,10 +51,11 @@ Feedback as always is welcome.
 ### Hardware setup
 
 ```
-Essentially a voltage divider.
 
-
-  Vcc ----[ FSR ]-----x------[ 10K ]------- GND
+  Vcc ----[ FSR ]-----A------[ 10K ]------- GND
+                      |
+                      |
+                      X
                       |
                       |
                   analogPort
@@ -64,11 +65,14 @@ Essentially a voltage divider.
 The 10 K resistor gives a broad range of values.
 See datasheet for possible other values and their range.
 
+Essentially it is a voltage divider, optionally at X an OP-AMP.
+See https://www.youtube.com/watch?v=dfGScD0UKZM
+
 
 ### Acceleration of gravity
 
 This constant is used to convert Kgf to Newtons. The library use the
-defined average, although gravity is not uniform.
+defined average 9.80655, although gravity is not uniform.
 It varies ~0.7% due to latitude, altitude, and local density differences.
 In space it varies even more.
 Feel free to adjust the library to your needs.
@@ -77,11 +81,19 @@ Feel free to adjust the library to your needs.
 - equator: 9.7806 m/s2
 - average: 9.80655 m/s2
 
+Estimation formula for g at latitude:
+```
+float g = 9.7806 + sin(latitude * PI/180.0) * (9.8337 - 9.7806);
+```
+
 
 ### Special characters
 
-Ω == Ohm = ALT-234 (Windows)
-µ == micro = ALT-0181 (Windows)
+|  char  |  name       |  Windows     |
+|:------:|:------------|:------------:|
+|    Ω   |  Ohm        |  ALT-234     |
+|    µ   |  micro      |  ALT-0181    |
+
 
 ### Compatibility
 
@@ -100,9 +112,6 @@ and any other applications that may cause personal injury due to the product's f
 - https://github.com/RobTillaart/FSR40X - this library
 - https://github.com/RobTillaart/Pressure - unit conversion
 - https://github.com/RobTillaart/PrintHelpers - scientific and engineering notation.
-
-
-https://www.youtube.com/watch?v=dfGScD0UKZM
 
 
 ### Tested
